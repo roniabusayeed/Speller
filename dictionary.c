@@ -20,6 +20,12 @@ typedef struct node
 node;
 
 
+// Prototypes
+
+// Counts the number of nodes in a linked list
+unsigned int count_list(node* list);
+
+
 // Number of buckets in hash table
 const unsigned int N = 26;
 
@@ -96,8 +102,20 @@ bool load(const char *dictionary)
 // Returns number of words in dictionary if loaded else 0 if not yet loaded
 unsigned int size(void)
 {
-    // TODO
-    return 0;
+    if(!LOADED)
+        return 0;
+    else
+    {
+        unsigned int word_count = 0;
+
+        // For each bucket in the hashtable, add up the number of nodes of linked-lists pointed to
+        // by the buckets.
+        for(int i = 0; i < N; i++)
+        {
+            word_count += count_list(table[i]);
+        }
+        return word_count;
+    }
 }
 
 // Unloads dictionary from memory, returning true if successful else false
@@ -105,4 +123,19 @@ bool unload(void)
 {
     // TODO
     return false;
+}
+
+// Counts the number of nodes in a linked-list
+unsigned int count_list(node* list)
+{
+    unsigned int counter = 0;
+
+    node* temp = list;
+    while (temp)
+    {
+        counter++;
+        temp = temp->next;
+    }
+
+    return counter;
 }

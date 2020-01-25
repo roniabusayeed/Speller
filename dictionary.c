@@ -8,6 +8,8 @@
 
 #include "dictionary.h"
 
+bool LOADED = false;
+
 
 // Represents a node in a hash table
 typedef struct node
@@ -41,8 +43,54 @@ unsigned int hash(const char *word)
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
 {
-    // TODO
-    return false;
+   // Putting empty list in all the buckets of hashtable.
+    for (int i = 0; i < N; i++)
+    {
+        table[i] = NULL;
+    }
+
+    // Open the dictionary file for reading
+    FILE* ptr = fopen(dictionary, "r");
+    if(ptr == NULL)
+    {
+        // Failure
+        return false;
+    }
+
+    // Temporary word
+    char* word = malloc(sizeof(char) * (LENGTH + 1));  // Extra 1 Byte for null terminator
+    if (word == NULL)
+    {
+        // Failure
+        return false;
+    }
+
+    while(fscanf(ptr, "%s", word) != EOF)
+    {
+        int idx = hash(word);   // This is where in the hash table the word goes.
+
+        // Make a node and insert into the hashtable in the hashed idx.
+        node* n = malloc(sizeof(node));
+        if (n == NULL)
+        {
+            // Failure
+            return false;
+        }
+        strcpy(n->word, word);
+        n->next = table[idx];
+        table[idx] = n;
+    }
+
+    // Free temporary word
+    free(word);
+
+    // Done working with the file
+    fclose(ptr);
+
+    // Success
+    LOADED = true;
+    return true; 
+
 }
 
 // Returns number of words in dictionary if loaded else 0 if not yet loaded

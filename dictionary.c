@@ -25,6 +25,10 @@ node;
 // Counts the number of nodes in a linked list
 unsigned int count_list(node* list);
 
+// Frees a linked-list (Iteratively)
+void destroy(node* list);
+
+
 
 // Number of buckets in hash table
 const unsigned int N = 26;
@@ -96,7 +100,6 @@ bool load(const char *dictionary)
     // Success
     LOADED = true;
     return true; 
-
 }
 
 // Returns number of words in dictionary if loaded else 0 if not yet loaded
@@ -121,8 +124,13 @@ unsigned int size(void)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    // TODO
-    return false;
+    for(int i = 0; i < N; i++)
+    {
+        destroy(table[i]);
+    }
+    return true;
+
+    // I don't think there will be a case where it's unsuccessful. But sure I'll look!
 }
 
 // Counts the number of nodes in a linked-list
@@ -138,4 +146,23 @@ unsigned int count_list(node* list)
     }
 
     return counter;
+}
+
+// Frees a linked-list (Iteratively)
+void destroy(node* list)
+{
+    node* temp = NULL;
+
+    // While there is at least one node in the linked-list
+    while (list)
+    {
+        // Save the rest of the list first
+        temp = list->next;
+
+        //  Free the first node
+        free(list);
+
+        // Rest of the list is now a new (shorter) list
+        list = temp;
+    }
 }

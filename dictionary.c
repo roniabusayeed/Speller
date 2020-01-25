@@ -39,8 +39,37 @@ node *table[N];
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
-    // TODO
-    return false;
+    // make the word lowercase (For case insensitivity)
+    char word_lower[strlen(word) + 1];  // Extra 1 Byte for null terminator.
+    for(int i = 0, n = strlen(word); i < n; i++)
+    {
+        word_lower[i] = tolower(word[i]);
+    }
+    word_lower[strlen(word)] = 0;   // Null terminator
+
+    // Initially the word is not yet found because we are not done searching the hashtable.
+    bool found = false;
+
+    // Finding the right bucket in hashtable.
+    unsigned int idx = hash(word);
+
+    // Traverse the linked list to find a word match. Search no more if found a match.
+    node* temp = table[idx];
+    while(temp)
+    {
+        if (strcmp(word_lower, temp->word) == 0)
+        {
+            found = true;
+            break;
+        }
+
+        // update
+        temp = temp->next;
+    }
+
+    // Result
+    return found;
+
 }
 
 // Hashes word to a number

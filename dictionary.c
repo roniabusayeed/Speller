@@ -33,7 +33,6 @@ unsigned int count_list(node* list);
 void destroy(node* list);
 
 
-
 // Number of buckets in hash table
 const unsigned int N = 26;
 
@@ -50,22 +49,17 @@ bool check(const char *word)
     unsigned int idx = hash(word);
 
     // Traverse the linked list to find a word match. Search no more if found a match.
-    node* temp = table[idx];
-    while(temp)
+    for (node* temp = table[idx]; temp != NULL; temp = temp->next)
     {
         if (strcasecmp(word, temp->word) == 0)
         {
             found = true;
             break;
         }
-
-        // update
-        temp = temp->next;
     }
 
     // Result
     return found;
-
 }
 
 // Hashes word to a number
@@ -160,11 +154,10 @@ unsigned int count_list(node* list)
 {
     unsigned int counter = 0;
 
-    node* temp = list;
-    while (temp)
+    // Traverse the linked-list
+    for(node* temp = list; temp != NULL; temp = temp->next)
     {
         counter++;
-        temp = temp->next;
     }
 
     return counter;
@@ -173,13 +166,11 @@ unsigned int count_list(node* list)
 // Frees a linked-list (Iteratively)
 void destroy(node* list)
 {
-    node* temp = NULL;
-
     // While there is at least one node in the linked-list
     while (list)
     {
         // Save the rest of the list first
-        temp = list->next;
+        node* temp = list->next;
 
         //  Free the first node
         free(list);

@@ -39,14 +39,6 @@ node *table[N];
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
-    // make the word lowercase (For case insensitivity)
-    char word_lower[strlen(word) + 1];  // Extra 1 Byte for null terminator.
-    for(int i = 0, n = strlen(word); i < n; i++)
-    {
-        word_lower[i] = tolower(word[i]);
-    }
-    word_lower[strlen(word)] = 0;   // Null terminator
-
     // Initially the word is not yet found because we are not done searching the hashtable.
     bool found = false;
 
@@ -57,7 +49,7 @@ bool check(const char *word)
     node* temp = table[idx];
     while(temp)
     {
-        if (strcmp(word_lower, temp->word) == 0)
+        if (strcasecmp(word, temp->word) == 0)
         {
             found = true;
             break;

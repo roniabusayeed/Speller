@@ -11,6 +11,9 @@
 
 bool LOADED = false;
 
+// Total number of words in the dictionary
+unsigned int SIZE = 0;
+
 
 // Represents a node in a hash table
 typedef struct node
@@ -108,9 +111,13 @@ bool load(const char *dictionary)
             // Failure
             return false;
         }
+
         strcpy(n->word, word);
         n->next = table[idx];
         table[idx] = n;
+
+        // This loop iterates the same number of times SIZE should be.
+        SIZE++;
     }
 
     // Free temporary word
@@ -128,19 +135,12 @@ bool load(const char *dictionary)
 unsigned int size(void)
 {
     if(!LOADED)
-        return 0;
-    else
     {
-        unsigned int word_count = 0;
-
-        // For each bucket in the hashtable, add up the number of nodes of linked-lists pointed to
-        // by the buckets.
-        for(int i = 0; i < N; i++)
-        {
-            word_count += count_list(table[i]);
-        }
-        return word_count;
+        return 0;
+        // Returning SIZE directly would also work, 'cause it's if nothing's loaded it's default
+        // value is 0
     }
+    return SIZE;
 }
 
 // Unloads dictionary from memory, returning true if successful else false

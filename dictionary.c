@@ -34,7 +34,7 @@ void destroy(node* list);
 
 
 // Number of buckets in hash table
-const unsigned int N = 26;
+const unsigned int N = 676;
 
 // Hash table
 node *table[N];
@@ -65,8 +65,16 @@ bool check(const char *word)
 // Hashes word to a number
 unsigned int hash(const char *word)
 {
-    char c = word[0];
-    return toupper(c) - 65;
+    int a = 0;
+    int b = 0;
+
+    // Hash only if the length of string is at least 2. Otherwise hash to 0.
+    if (word && strlen(word) > 1)
+    {
+        a = toupper(word[0]) - 65;
+        b = toupper(word[1]) - 65;
+    }
+    return 26 * a + b;
 }
 
 // Loads dictionary into memory, returning true if successful else false

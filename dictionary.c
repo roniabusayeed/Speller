@@ -8,6 +8,8 @@
 #include <stdlib.h>
 
 #include "dictionary.h"
+#include "hash.h"
+
 
 bool LOADED = false;
 
@@ -34,7 +36,7 @@ void destroy(node* list);
 
 
 // Number of buckets in hash table
-const unsigned int N = 676;
+const unsigned int N = 10000;
 
 // Hash table
 node *table[N];
@@ -62,19 +64,26 @@ bool check(const char *word)
     return found;
 }
 
-// Hashes word to a number
-unsigned int hash(const char *word)
+// Hashes (case insensitively) a null terminated byte string to a (32-bit) unsigned integer
+unsigned int hash(const char* data)
 {
-    int a = 0;
-    int b = 0;
-
-    // Hash only if the length of string is at least 2. Otherwise hash to 0.
-    if (word && strlen(word) > 1)
+    // Make a lowecase copy of <data>
+    unsigned int len = strlen(data);
+    char* str = malloc(sizeof(char) * (len + 1));
+    for(int i = 0; data[i]; i++)
     {
-        a = toupper(word[0]) - 65;
-        b = toupper(word[1]) - 65;
+      str[i] = tolower(data[i]);
     }
-    return 26 * a + b;
+    str[len] = 0;
+
+    // Hash the lowercase copy of <data>: <str>
+    // Hash all (len) bytes i.e. characters of str
+    unsigned int hashCode = SuperFastHash(str, len) % N;
+    // printf("%u\n", hashCode);
+
+    // Free
+    free(str);
+    return hashCode;
 }
 
 // Loads dictionary into memory, returning true if successful else false

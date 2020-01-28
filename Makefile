@@ -6,4 +6,5 @@ speller:
 	${CC} ${CFLAGS} -c -o speller.o speller.c
 	${CC} ${CFLAGS} -c -o dictionary.o dictionary.c
 	${CC} ${CFLAGS} -c -o hash.o hash.c
-	${CC} ${CFLAGS} -o speller speller.o dictionary.o hash.o ${LDLIBS}
+	${CC} ${CFLAGS} -c -o utils.o utils.c
+	${CC} ${CFLAGS} -o speller speller.o dictionary.o hash.o utils.o ${LDLIBS}

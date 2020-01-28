@@ -7,33 +7,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "dictionary.h"
+#include "dictionary.h" // Contains definition of struct node
 #include "hash.h"
+#include "utils.h"
 
 
 bool LOADED = false;
 
 // Total number of words in the dictionary
 unsigned int SIZE = 0;
-
-
-// Represents a node in a hash table
-typedef struct node
-{
-    char word[LENGTH + 1];  // Extra 1 Byte for null terminator
-    struct node *next;
-}
-node;
-
-
-// Prototypes
-
-// Counts the number of nodes in a linked list
-unsigned int count_list(node* list);
-
-// Frees a linked-list (Iteratively)
-void destroy(node* list);
-
 
 // Number of buckets in hash table
 const unsigned int N = 10000;
@@ -164,35 +146,4 @@ bool unload(void)
     return true;
 
     // I don't think there will be a case where it's unsuccessful. But sure I'll look!
-}
-
-// Counts the number of nodes in a linked-list
-unsigned int count_list(node* list)
-{
-    unsigned int counter = 0;
-
-    // Traverse the linked-list
-    for(node* temp = list; temp != NULL; temp = temp->next)
-    {
-        counter++;
-    }
-
-    return counter;
-}
-
-// Frees a linked-list (Iteratively)
-void destroy(node* list)
-{
-    // While there is at least one node in the linked-list
-    while (list)
-    {
-        // Save the rest of the list first
-        node* temp = list->next;
-
-        //  Free the first node
-        free(list);
-
-        // Rest of the list is now a new (shorter) list
-        list = temp;
-    }
 }
